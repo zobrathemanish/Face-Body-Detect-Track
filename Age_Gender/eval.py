@@ -42,6 +42,7 @@ def eval(aligned_images, model_path):
         else:
             pass
         
+        print([age, gender])
         return sess.run([age, gender], feed_dict={images_pl: aligned_images, train_mode: False})
 
 

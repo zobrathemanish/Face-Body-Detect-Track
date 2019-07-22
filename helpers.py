@@ -160,7 +160,8 @@ def draw_box_label(id,img, bbox_cv2, box_color=(0, 255, 255), show_label=True):
         text_y= 'y='+str((top+bottom)/2)
         # print(text_y)
         centroid = (top+bottom)/2
-        if((centroid > 450) and (centroid < 460)):
+
+        if((bottom > 1042) and (bottom) < 1050):
 
             xima = left
             yima = top
@@ -180,11 +181,11 @@ def draw_box_label(id,img, bbox_cv2, box_color=(0, 255, 255), show_label=True):
 
             cv2.imwrite(image_path,crop_img)
 
-            r = faceconf.confidence_score(image_path)
+            # r = faceconf.confidence_score(image_path)
 
-            with open('DB/' + str(id) + '/'  + str(id) + ".txt", "a") as myfile:
+            # with open('DB/' + str(id) + '/'  + str(id) + ".txt", "a") as myfile:
                 
-                myfile.write(str(r) + "\n")
+            #     myfile.write(str(r) + "\n")
 
                 
 
@@ -202,37 +203,44 @@ def draw_box_label(id,img, bbox_cv2, box_color=(0, 255, 255), show_label=True):
 
             # while(False):
 
+            try:
 
-                # try:
+                aligned_image, image, rect_nums, XY = ager.load_image(image_path, shape_detector)
 
-                #     aligned_image, image, rect_nums, XY = ager.load_image(image_path, shape_detector)
+                ages, genders = ager.eval(aligned_image, model_path)
 
-                #     ages, genders = ager.eval(aligned_image, model_path)
+                # print(str(id), ages, genders)
 
-                #     # print(str(id), ages, genders)
+                age = int(ages)
+                gen = int(genders)
 
-                #     with open(str(id) + '/'  + str(id) + ".txt", "a") as myfile:
-                #         # print("Writing the intended text")
-                #         myfile.write(str(id) + str(ages) + str(genders) +  "\n")
-                    
-
-
-                # except Exception:
-
-                #     with open(str(id) + '/'  + str(id) + ".txt", "a") as myfile:
-                #         # print("Writing the intended text")
-
-                #         myfile.write(str(id) + "Maybe its the back image, the returning image" +  "\n")
-                #         myfile.write(str(id) + "Image is too low in resolution" +  "\n")
-                    
-                #     print(str(id) , "The images are too low for resolution !!")
+                if(gen == 0):
+                    real_gender = "Female"
+                else:
+                    real_gender = "Male"
 
 
-                # if text_x not in id_list:
-                #     id_list.append(text_x)
+                with open('DB/' + str(id) + '/'  + str(id) + ".txt", "a") as myfile:
+                    # print("Writing the intended text")
+                    myfile.write(str(id) + ' ' + str(age) + ' ' + str(real_gender) +  "\n")
+                
 
-            # cv2.putText(img,text_y,(left,top-5), font, font_size, font_color, 1, cv2.LINE_AA)
+            except Exception:
 
-            # print(id_list)
+                with open('DB/' + str(id) + '/'  + str(id) + ".txt", "a") as myfile:
+                    # print("Writing the intended text")
 
-        return img
+                    myfile.write(str(id) + " Internal Server Error" +  "\n")
+                    # myfile.write(str(id) + " Image is too low in resolution" +  "\n")
+                
+                print(str(id) , "The images are too low for resolution !!")
+
+
+            if text_x not in id_list:
+                id_list.append(text_x)
+
+        # cv2.putText(img,text_y,(left,top-5), font, font_size, font_color, 1, cv2.LINE_AA)
+
+        # print(id_list)
+
+    return img

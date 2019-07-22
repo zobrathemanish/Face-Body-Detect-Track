@@ -82,10 +82,6 @@ def main(sess,age,gender,train_mode,images_pl):
         # draw results
         for i, d in enumerate(detected):
             label = "{}, {}".format(int(ages[i]), "F" if genders[i] == 0 else "M")
-            print("***********************************")
-            print(genders[i])
-           	print("***********************************")
-
             draw_label(img, (d.left(), d.top()), label)
 
         cv2.imshow("result", img)
