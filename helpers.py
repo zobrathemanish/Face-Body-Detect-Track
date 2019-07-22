@@ -14,6 +14,8 @@ import Age_Gender.eval as ager
 
 import faceConfidence.faceConfidence as faceconf
 
+from Person import insertPerson
+
 global all_folders
 all_folders = []
 
@@ -223,7 +225,10 @@ def draw_box_label(id,img, bbox_cv2, box_color=(0, 255, 255), show_label=True):
                 with open('DB/' + str(id) + '/'  + str(id) + ".txt", "a") as myfile:
                     # print("Writing the intended text")
                     myfile.write(str(id) + ' ' + str(age) + ' ' + str(real_gender) +  "\n")
-                
+
+                print(str(id) , "Images are good !!")
+                    
+                insertPerson(str(age),real_gender,str(id)+"/"+str(id)+".jpg")
 
             except Exception:
 
@@ -235,6 +240,8 @@ def draw_box_label(id,img, bbox_cv2, box_color=(0, 255, 255), show_label=True):
                 
                 print(str(id) , "The images are too low for resolution !!")
 
+
+                insertPerson("15","m","manish/bottle")
 
             if text_x not in id_list:
                 id_list.append(text_x)

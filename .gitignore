@@ -2,3 +2,4 @@
 Age_Gender/shape_predictor_68_face_landmarks.dat
 test_ckpt/ssd_inception_v2.pb
 Age_Gender/models/savedmodel.ckpt.data-00000-of-00001
+venv
